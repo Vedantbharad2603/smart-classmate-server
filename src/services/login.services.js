@@ -16,8 +16,10 @@ module.exports = {
 async function getAll() {
     return await db.Login.findAll();
 }
-async function getById(id) {
-    const login = await db.Login.findByPk(id);
+async function getById(idin) {
+    const login = await db.Login.findOne({
+        where: { id: idin},
+    });
     if (!login) throw new Error("User not found");
     return login;
 }
