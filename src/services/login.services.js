@@ -113,7 +113,9 @@ async function getaddressatribute(idin) {
 }
 
 async function getloginatribute(id) {
-    const login = await db.Login.findByPk(id);
+    const login = await db.Login.findOne({
+        where:{id :idin}
+    });
     if (!login) return "Login not found";
     return login;
 }
