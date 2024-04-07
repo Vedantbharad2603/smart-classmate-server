@@ -1,5 +1,5 @@
 const student_service = require("../services/student.services");
-exports.create = (req, res, next) => {
+exports.addstud = (req, res, next) => {
     student_service
     .create(req.body)
     .then((response) =>

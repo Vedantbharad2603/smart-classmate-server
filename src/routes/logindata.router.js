@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/", logindataController.create);
 router.get("/", logindataController.findAll);
 router.get("/find/:id", logindataController.findOne);
-router.get("/check", logindataController.check);
+router.post("/check", logindataController.check);
 router.put("/change/:id", logindataController.changeUserStatus);
 router.put("/update/:id", logindataController.updatelogin);
 // router.delete("/:id", logindataController.del);

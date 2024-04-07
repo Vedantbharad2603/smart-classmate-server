@@ -1,6 +1,6 @@
-const attendance_service = require("../services/attendance.services");
+const homework_service = require("../services/homework.services");
 exports.create = (req, res, next) => {
-    attendance_service
+    homework_service
     .create(req.body)
     .then((response) =>
         res.status(200).send({
@@ -12,7 +12,7 @@ exports.create = (req, res, next) => {
 };
 
 exports.findAll = (req, res, next) => {
-    attendance_service
+    homework_service
     .getAll()
     .then((response) =>
         res.status(200).send({
@@ -23,9 +23,9 @@ exports.findAll = (req, res, next) => {
     .catch(next);
 };
 
-exports.makeattendance = (req, res, next) => {
-    attendance_service
-    .getAllactiveStudent()
+exports.giveStudentAllhomework = (req, res, next) => {
+    homework_service
+    .getAll()
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -34,33 +34,29 @@ exports.makeattendance = (req, res, next) => {
     )
     .catch(next);
 };
-
-// exports.makeattendance = (req, res, next) => {
-//     attendance_service
-//     .createtodayattendance()
-//     .then((response) =>
-//         res.status(200).send({
-//             message: typeof response === "string" ? "Error" : "Success",
-//             data: response,
-//         })
-//     )
-//     .catch(next);
-// };
 
 exports.findOne = (req, res, next) => {
-    attendance_service
-    .getStudnetAttendance(req.params.id)
-    .then((response) =>
+    homework_service
+    .getStudnetHomework(req.params.id)
+    .then((response) => {
+        if (!response) {
+            return res.status(404).send({
+                message: "Homework record not found",
+                data: null,
+            });
+        }
+
         res.status(200).send({
-            message: typeof response === "string" ? "Error" : "Success",
+            message: "Success",
             data: response,
-        })
-    )
+        });
+    })
     .catch(next);
 };
 
+
 exports.update = (req, res, next) => {
-    attendance_service
+    homework_service
     .update(req.params.id, req.body)
     .then((response) =>
         res.status(200).send({
@@ -71,7 +67,7 @@ exports.update = (req, res, next) => {
     .catch(next);
 };
 exports.del = (req, res, next) => {
-    attendance_service
+    homework_service
     .del(req.params.id)
     .then((response) =>
         res.status(200).send({ message: "Success", data: response })

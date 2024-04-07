@@ -13,12 +13,17 @@ async function getAll() {
 }
 async function getById(id) {
     const address = await db.Address.findByPk(id);
-    if (!address) throw new Error("Address not found");
+    if (!address) {
+        throw new Error("No data found");
+    }
     return address;
 }
 
 async function update(idin, params) {
     const address = await getaddressatribute(idin);
+    if (!address) {
+        throw new Error("No data found");
+    }
     Object.assign(address, params);
     await address.save();
     return address;

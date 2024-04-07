@@ -4,22 +4,17 @@ module.exports = model;
 
 function model(sequelize) {
     return sequelize.define("holidays", {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
         holiday_name: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
         holiday_date: {
             type: DataTypes.DATE,
-            allowNull: true,
+            allowNull: false,
         },
         is_holiday: {
             type: DataTypes.BOOLEAN,
-            allowNull: true,
+            allowNull: false,
         },
     });
 }

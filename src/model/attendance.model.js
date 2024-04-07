@@ -6,10 +6,10 @@ function model(sequelize) {
     return sequelize.define("attendance", {
         date: {
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: false
         },
         status: {
-            type: DataTypes.ENUM('Present', 'Absent', 'On Leave'),
+            type: DataTypes.ENUM('Present', 'Absent', 'On Leave','undefined'),
             allowNull: false,
         },
     });

@@ -16,9 +16,9 @@ module.exports = {
 async function getAll() {
     return await db.Login.findAll();
 }
-async function getById(idin) {
+async function getById(inid) {
     const login = await db.Login.findOne({
-        where: { id: idin},
+        where: { id: inid},
     });
     if (!login) throw new Error("User not found");
     return login;
@@ -47,9 +47,10 @@ async function update(idin, params) {
 
 
 async function create(params) {
-    const { username, password } = params;
+    const {password } = params;
 
-    const existingLogin = await db.Login.findOne({ username });
+    const existingLogin = await db.Login.findOne({ 
+        where: { username: params.username}});
     if (existingLogin) {
         throw new Error("Username already exists.");
     }
@@ -65,8 +66,8 @@ async function create(params) {
 }
 
 
-async function changeStatus(id) {
-    const login = await getloginatribute(id);
+async function changeStatus(inid) {
+    const login = await getloginatribute(inid);
     //    const ret_msg = '';
     if (login.isActive) {
         login.isActive = false;
@@ -112,9 +113,9 @@ async function getaddressatribute(idin) {
     return teacher;
 }
 
-async function getloginatribute(id) {
+async function getloginatribute(inid) {
     const login = await db.Login.findOne({
-        where:{id :idin}
+        where:{id :inid}
     });
     if (!login) return "Login not found";
     return login;

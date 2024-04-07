@@ -4,32 +4,23 @@ module.exports = model;
 
 function model(sequelize) {
     return sequelize.define("homework", {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        teacher_id: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            references: { model: 'teacherdata', key: 'ID' }
-        },
-        student_id: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            references: { model: 'studentdata', key: 'id' }
-        },
         homework_details: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
         is_submited: {
             type: DataTypes.BOOLEAN,
+            default:false,
+            allowNull: false,
+        },
+        homework_date: {
+            type: DataTypes.DATE,
+            default:Date.now(),
             allowNull: false,
         },
         remark: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
     });
 }

@@ -1,5 +1,5 @@
 const db = require("../helper/db.helper");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 module.exports = {
     getAll,
@@ -9,19 +9,35 @@ module.exports = {
     del,
 };
 async function getAll() {
-    return await db.Shift.findAll();
+    const shifts = await db.Shift.findAll();
+    if (shifts.length <= 0) {
+        throw new Error("Shifts not found");
+    }
+    return shifts;
 }
-async function getById(id) {
-    const shift = await db.Shift.findByPk(id);
-    if (!shift) throw new Error("User not found");
+async function getById(idin) {
+    console.log(idin);
+    const shift = await db.Shift.findAll({
+        where:{
+        id:idin
+        }
+    });
+    if (shift.length <= 0) {
+        throw new Error("Shift not found");
+    }
     return shift;
 }
 async function update(idin, params) {
     const updatingShift = await getshiftatribute(idin);
-    const existingShift = await db.Shift.findOne({ where :{shiftName :{[Op.iLike]: params.shiftName}}});
+    const existingShift = await db.Shift.findAll({
+        where: {
+            startTime : params.startTime,
+            endTime : params.endTime,
+        },
+    });
     
-    if (existingShift) {
-        throw new Error("Shift already exists.");
+    if (existingShift.length > 0)  {
+        throw new Error("Shift with the same start and end time already exists.");
     }
     Object.assign(updatingShift, params);
     await updatingShift.save();
@@ -29,8 +45,13 @@ async function update(idin, params) {
 }
 
 async function create(params) {
-    const existingShift = await db.Shift.findOne({ where :{shiftName :{[Op.iLike]: params.shiftName}}});
-    if (existingShift) {
+    const existingShift = await db.Shift.findAll({
+        where: {
+            startTime : params.startTime,
+            endTime : params.endTime,
+        },
+    });
+    if (existingShift.length > 0)  {
         throw new Error("Shift already exists.");
     }
 
@@ -39,12 +60,18 @@ async function create(params) {
     return shift;
 }
 
-async function getshiftatribute(username) {
-    const shift = await db.Shift.findByPk(username);
-    if (!shift) return "Shift not found";
+async function getshiftatribute(id) {
+    const shift = await db.Shift.findByPk(id);
+    if (!shift) {
+        throw new Error("Shift not found");
+    }
     return shift;
 }
 async function del(did){
+    const shift = await db.Shift.findByPk(did);
+    if (!shift) {
+        throw new Error("Shift not found");
+    }
     return await db.Shift.destroy({
         where:{
         id:did

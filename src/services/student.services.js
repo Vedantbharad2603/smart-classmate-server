@@ -34,6 +34,23 @@ async function getById(id) {
     return { student,login, address };
 }
 
+async function create(params) {
+    // // Validate email format
+    // if (params.email && !valid.isValidEmail(params.email)) {
+    //     throw new Error('Invalid email format');
+    // }
+
+    // // Validate mobile number format
+    // if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
+    //     throw new Error('Invalid mobile number format');
+    // }
+    console.log(params);
+    const student = new db.Student(params);
+    await student.save();
+    return student;
+}
+
+
 async function getaddressatribute(idin) {
     const address = await db.Address.findOne({
         where:{id :idin}
@@ -64,21 +81,21 @@ async function update(idin, params) {
     await existingTeacher.save();
     return existingTeacher;
 }
-async function create(params) {
-    // Validate email format
-    if (params.email && !valid.isValidEmail(params.email)) {
-        throw new Error('Invalid email format');
-    }
+// async function create(params) {
+//     // Validate email format
+//     if (params.email && !valid.isValidEmail(params.email)) {
+//         throw new Error('Invalid email format');
+//     }
 
-    // Validate mobile number format
-    if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
-        throw new Error('Invalid mobile number format');
-    }
+//     // Validate mobile number format
+//     if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
+//         throw new Error('Invalid mobile number format');
+//     }
     
-    const student = new db.Student(params);
-    await student.save();
-    return student;
-}
+//     const student = new db.Student(params);
+//     await student.save();
+//     return student;
+// }
 
 async function getteacheratribute(id) {
     const student = await db.Student.findByPk(id);
