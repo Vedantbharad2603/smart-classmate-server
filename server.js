@@ -5,7 +5,7 @@ const cors = require('cors')
 // Require route modules
 const logindataRoutes = require('./src/routes/logindata.router');
 const teacherdataRoutes = require('./src/routes/teacherdata.router');
-const addressRoutes = require('./src/routes/address.router');
+// const addressRoutes = require('./src/routes/address.router');
 const shiftRoutes = require('./src/routes/shiftdata.router');
 const studentRoutes = require('./src/routes/studentdata.router');
 const attendanceRoutes = require('./src/routes/attendance.router');
@@ -28,7 +28,6 @@ app.use(cors())
 
 // Define routes 
 app.use("/login", logindataRoutes)
-app.use("/address", addressRoutes)
 app.use("/teacher", teacherdataRoutes)
 app.use("/shift", shiftRoutes)
 app.use("/student", studentRoutes)

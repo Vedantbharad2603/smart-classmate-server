@@ -29,7 +29,7 @@ async function initialize() {
   });
 
   db.Login = require("../model/logindata.model")(sequelize);
-  db.Address = require("../model/address.model")(sequelize);
+  // db.Address = require("../model/address.model")(sequelize);
   db.Teacher = require("../model/teacherdata.model")(sequelize);
   db.Shift = require("../model/shiftdata.model")(sequelize);
   db.Student = require("../model/studentdata.model")(sequelize);
@@ -40,13 +40,11 @@ async function initialize() {
   db.Homework = require("../model/homework.model")(sequelize);
 
   // For Teacher references
-  db.Address.hasMany(db.Teacher, { foreignKey: { allowNull: false } });
   db.Login.hasMany(db.Teacher, { foreignKey: { allowNull: false } });
 
   // For Student references
   db.Login.hasMany(db.Student, { foreignKey: { allowNull: false } });
   db.Shift.hasMany(db.Student, { foreignKey: { allowNull: false } });
-  db.Address.hasMany(db.Student, { foreignKey: { allowNull: false } });
 
   // For Attendance references
   db.Student.hasMany(db.Attendance, { foreignKey: { allowNull: false } });

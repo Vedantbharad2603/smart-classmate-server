@@ -27,11 +27,9 @@ async function getById(id) {
     if (!student) throw new Error("Student not found");
 
     if (!student) return "Student not found for this login";
-    address = await getaddressatribute(student.addressId);
-    if (!address) return "Address not found for this student";
     login = await getloginatribute(student.logindatumId);
     if (!login) return "Login data not found for this student";
-    return { student,login, address };
+    return { student,login};
 }
 
 async function create(params) {
@@ -51,13 +49,6 @@ async function create(params) {
 }
 
 
-async function getaddressatribute(idin) {
-    const address = await db.Address.findOne({
-        where:{id :idin}
-    });
-    if (!address) return "Address not found";
-    return address;
-}
 
 async function getloginatribute(id) {
     const login = await db.Login.findByPk(id);

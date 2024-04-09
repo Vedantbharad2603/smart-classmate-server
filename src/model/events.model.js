@@ -16,10 +16,6 @@ function model(sequelize) {
         event_date: {
             type: DataTypes.DATE,
             allowNull: true,
-        },
-        shift_id: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
+        }
     });
 }

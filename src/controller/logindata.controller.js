@@ -23,9 +23,32 @@ exports.findAll = (req, res, next) => {
     .catch(next);
 };
 
+exports.findteacher = (req, res, next) => {
+    login_service
+    .getTeacher()
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
+
 exports.findOne = (req, res, next) => {
     login_service
     .getById(req.params.id)
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
+exports.findOnebyusername = (req, res, next) => {
+    login_service
+    .getByUname(req.body.username)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -59,7 +82,14 @@ exports.updatelogin = (req, res, next) => {
 
 exports.changeUserStatus = (req, res, next) => {
     login_service
-    .changeStatus(req.params.id)
+    .changeStatus(req.body.id)
+    .then((response) =>
+        res.status(200).send({ message: "Success", data: response })
+    ).catch(next);
+};
+exports.changeType = (req, res, next) => {
+    login_service
+    .changeType(req.body.id,req.body.type)
     .then((response) =>
         res.status(200).send({ message: "Success", data: response })
     ).catch(next);

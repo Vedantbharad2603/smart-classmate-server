@@ -5,20 +5,41 @@ const { Op } = require("sequelize");
 module.exports = {
     getAll,
     getById,
+    getTeacher,
     checklogin,
     create,
     update,
     del,
+    changeType,
     changeStatus,
     getteacheratribute,
-    getaddressatribute
+    getstudentatribute,
+    getByUname
 };
 async function getAll() {
     return await db.Login.findAll();
 }
+
+async function getTeacher() {
+    return await db.Login.findAll({
+        where: {
+            type: {
+                [Op.not]: 'student'
+            }
+        }
+    });
+}
 async function getById(inid) {
     const login = await db.Login.findOne({
         where: { id: inid},
+    });
+    if (!login) throw new Error("User not found");
+    return login;
+}
+
+async function getByUname(uname) {
+    const login = await db.Login.findOne({
+        where: { username: uname},
     });
     if (!login) throw new Error("User not found");
     return login;
@@ -68,33 +89,47 @@ async function create(params) {
 
 async function changeStatus(inid) {
     const login = await getloginatribute(inid);
-    //    const ret_msg = '';
     if (login.isActive) {
         login.isActive = false;
-        // ret_msg = 'Camp Inactivated';
-        console.log("User Inactivated");
+        console.log("User is Inactivate");
     } else {
         login.isActive = true;
-        console.log("User Activated");
-        // ret_msg = 'Camp Activated';
+        console.log("User is Activate");
     }
     await login.save();
     return login;
 }
+async function changeType(inid,typein) {
+    const login = await getloginatribute(inid);
+    login.type = typein;
+    await login.save();
+    return login;
+}
+
 async function checklogin(params) {
     const login = await db.Login.findOne({
         where: { username: params.username, isActive: true },
     });
     if (!login) return "no login found";
     if (login.password !== params.password) return "incorrect password";
-    let teacher, address;
-    if (login.type !== "student") {
-        teacher = await getteacheratribute(login.id);
-        if (!teacher) return "Teacher not found for this login";
-        address = await getaddressatribute(teacher.addressId);
-        if (!address) return "Address not found for this teacher";
+    let userdata;
+    if (login.type == "student") {
+        userdata = await getstudentatribute(login.id);
+        if (!userdata) return "Student not found for this login";
     }
-    return { login, teacher, address };
+    else {
+        userdata = await getteacheratribute(login.id);
+        if (!userdata) return "Teacher not found for this login";
+    }
+    return { login, userdata };
+}
+
+async function getstudentatribute(idin) {
+    const student = await db.Student.findOne({
+        where:{logindatumId :idin}
+    });
+    if (!student) return "Login not found";
+    return student;
 }
 
 async function getteacheratribute(idin) {
@@ -105,13 +140,6 @@ async function getteacheratribute(idin) {
     return teacher;
 }
 
-async function getaddressatribute(idin) {
-    const teacher = await db.Address.findOne({
-        where:{id :idin}
-    });
-    if (!teacher) return "Address not found";
-    return teacher;
-}
 
 async function getloginatribute(inid) {
     const login = await db.Login.findOne({
