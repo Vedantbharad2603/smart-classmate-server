@@ -14,6 +14,10 @@ const eventsRoutes = require('./src/routes/events.router');
 const holidaysRoutes = require('./src/routes/holidays.router');
 const homeworkRoutes = require('./src/routes/homework.router');
 
+const coursesRoutes = require('./src/routes/courses.router');
+// const homeworkRoutes = require('./src/routes/homework.router');
+// const homeworkRoutes = require('./src/routes/homework.router');
+
 // Create an Express application
 const app = express()
 
@@ -36,6 +40,7 @@ app.use("/book", bookuploadRoutes)
 app.use("/events", eventsRoutes)
 app.use("/holidays", holidaysRoutes)
 app.use("/homework", homeworkRoutes)
+app.use("/courses", coursesRoutes)
 
 
 // Middleware to parse URL-encoded bodies

@@ -38,6 +38,10 @@ async function initialize() {
   db.Events = require("../model/events.model")(sequelize);
   db.Holidays = require("../model/holidays.model")(sequelize);
   db.Homework = require("../model/homework.model")(sequelize);
+  db.Courses = require("../model/courses.model")(sequelize);
+  db.CourseLevels = require("../model/course_levels.model")(sequelize);
+  db.CourseConcepts = require("../model/course_concepts.model")(sequelize);
+  db.CourseEnrollment = require("../model/course_enrollment.model")(sequelize);
 
   // For Teacher references
   db.Login.hasMany(db.Teacher, { foreignKey: { allowNull: false } });
@@ -55,6 +59,21 @@ async function initialize() {
   // For Homework references
   db.Student.hasMany(db.Homework, { foreignKey: { allowNull: false } });
   db.Teacher.hasMany(db.Homework, { foreignKey: { allowNull: false } });
+
+  // For CourseLevels references
+  db.Courses.hasMany(db.CourseLevels, { foreignKey: { allowNull: false } });
+
+  // For CourseConcepts references
+  db.Courses.hasMany(db.CourseConcepts, { foreignKey: { allowNull: false } });
+  db.CourseLevels.hasMany(db.CourseConcepts, { foreignKey: { allowNull: true } });
+
+  // For CourseConcepts references
+  db.Courses.hasMany(db.CourseConcepts, { foreignKey: { allowNull: false } });
+  db.CourseLevels.hasMany(db.CourseConcepts, { foreignKey: { allowNull: true } });
+
+  // For CourseEnrollment references
+  db.Student.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: false } });
+  db.Courses.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: false } });
 
   await sequelize.sync({ alter: false });
 }

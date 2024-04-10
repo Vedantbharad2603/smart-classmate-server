@@ -14,7 +14,7 @@ function model(sequelize) {
             allowNull: false,
         },
         homework_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             default:Date.now(),
             allowNull: false,
         },

@@ -5,7 +5,7 @@ module.exports = model;
 function model(sequelize) {
     return sequelize.define("attendance", {
         date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
         },
         status: {

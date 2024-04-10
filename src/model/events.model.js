@@ -14,7 +14,7 @@ function model(sequelize) {
             allowNull: true,
         },
         event_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: true,
         }
     });

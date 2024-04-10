@@ -4,14 +4,9 @@ module.exports = model;
 
 function model(sequelize) {
     return sequelize.define("courses", {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
         course_name: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
         has_levels: {
             type: DataTypes.BOOLEAN,

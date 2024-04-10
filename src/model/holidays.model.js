@@ -9,7 +9,7 @@ function model(sequelize) {
             allowNull: false,
         },
         holiday_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
         },
         is_holiday: {
