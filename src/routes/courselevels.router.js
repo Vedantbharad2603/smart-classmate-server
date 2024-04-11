@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.post("/", courselevelsController.create);
 router.get("/", courselevelsController.findAll);
+router.post("/getlevels",courselevelsController.getlevels);
 router.get("/find",courselevelsController.findOne);
 router.put("/update", courselevelsController.update);
 // router.delete("/:id", courselevelsController.del);

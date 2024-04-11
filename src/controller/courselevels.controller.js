@@ -22,6 +22,18 @@ exports.findAll = (req, res, next) => {
     )
     .catch(next);
 };
+
+exports.getlevels = (req, res, next) => {
+    courselevels_service
+    .getlevels(req.body.courseId)
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
 exports.findOne = (req, res, next) => {
     courselevels_service
     .getById(req.body.id)

@@ -6,10 +6,16 @@ module.exports = {
     getById,
     create,
     update,
+    getlevels,
     del,
 };
 async function getAll() {
     return await db.CourseLevels.findAll();
+}
+
+async function getlevels(idin) {
+    return await db.CourseLevels.findAll({ 
+        where: { courseId : idin}});
 }
 async function getById(id) {
     const courselevels = await db.CourseLevels.findByPk(id);
