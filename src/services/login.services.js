@@ -1,6 +1,7 @@
 const db = require("../helper/db.helper");
 const { isValidPassword } = require('../helper/data.validator');
 const { Op } = require("sequelize");
+const { link } = require("../routes/logindata.router");
 
 module.exports = {
     getAll,
@@ -21,13 +22,36 @@ async function getAll() {
 }
 
 async function getTeacher() {
-    return await db.Login.findAll({
+    // return
+    //  await db.Login.findAll({
+    //     where: {
+    //         type: {
+    //             [Op.not]: 'student'
+    //         }
+    //     }
+    // });
+    const login = await db.Login.findAll({
         where: {
             type: {
                 [Op.not]: 'student'
             }
+        },
+    });
+    // console.log(login);
+    // let userdata;
+    // userdata = await getteacheratribute(login.id);
+    // if (!userdata) return "Teacher not found for this login";
+    // return { login, userdata };
+    const userDataPromises = login.map(async (login) => {
+        if (login.type !== 'student') {
+            const userdata = await getteacheratribute(login.id);
+            if (!userdata) return "Teacher not found for this login";
+            return { login, userdata };
         }
     });
+
+    const userData = await Promise.all(userDataPromises);
+    return userData.filter(Boolean);
 }
 async function getById(inid) {
     const login = await db.Login.findOne({

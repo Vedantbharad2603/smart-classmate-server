@@ -18,7 +18,7 @@ function model(sequelize) {
         },
         course_status: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
         },
     });
 }
