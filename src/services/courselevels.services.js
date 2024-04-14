@@ -32,14 +32,26 @@ async function update(idin, params) {
 
 async function create(params) {
     const existingCourseLevels = await db.CourseLevels.findOne({ 
-        where: { courseId : params.courseId , level_name: params.level_name}});
+        where: { courseId: params.courseId, level_name: params.level_name }
+    });
+
     if (existingCourseLevels) {
         throw new Error("CourseLevels already exists.");
     }
-    const courselevels = new db.CourseLevels(params);
+
+    const maxLevelIndex = await db.CourseLevels.max('level_index', {
+        where: { courseId: params.courseId }
+    });
+
+    const courselevels = new db.CourseLevels({
+        ...params,
+        level_index: (maxLevelIndex || 0) + 1
+    });
+
     await courselevels.save();
     return courselevels;
 }
+
 
 async function getCourseLevelsatribute(idin) {
     const courselevels = await db.CourseLevels.findByPk(idin);
