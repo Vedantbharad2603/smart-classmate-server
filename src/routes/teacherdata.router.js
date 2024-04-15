@@ -5,6 +5,6 @@ const router = express.Router();
 router.post("/", teacherdataController.create);
 router.get("/", teacherdataController.findAll);
 router.get("/find",teacherdataController.findOne);
-router.put("/update/:id", teacherdataController.update);
+router.put("/update", teacherdataController.update);
 // router.delete("/:id", teacherdataController.del);
 module.exports = router;

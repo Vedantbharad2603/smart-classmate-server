@@ -67,10 +67,6 @@ async function initialize() {
   db.Courses.hasMany(db.CourseConcepts, { foreignKey: { allowNull: false } });
   db.CourseLevels.hasMany(db.CourseConcepts, { foreignKey: { allowNull: true } });
 
-  // For CourseConcepts references
-  db.Courses.hasMany(db.CourseConcepts, { foreignKey: { allowNull: false } });
-  db.CourseLevels.hasMany(db.CourseConcepts, { foreignKey: { allowNull: true } });
-
   // For CourseEnrollment references
   db.Student.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: false } });
   db.Courses.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: false } });

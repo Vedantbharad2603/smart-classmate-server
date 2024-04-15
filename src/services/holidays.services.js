@@ -6,12 +6,31 @@ module.exports = {
     getById,
     create,
     changeStatus,
+    upcoming,
     update,
     del
 };
 async function getAll() {
     return await db.Holidays.findAll();
 }
+
+
+async function upcoming() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return await db.Holidays.findOne({
+        where: {
+            holiday_date: {
+                [Op.gt]: today
+            },
+            is_holiday: true
+        },
+        order: [['holiday_date', 'ASC']],
+        limit: 1
+    });
+}
+
 async function getById(id) {
     const holidays = await db.Holidays.findByPk(id);
     if (!holidays) throw new Error("Holidays not found");

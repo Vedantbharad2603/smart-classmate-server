@@ -1,6 +1,6 @@
-const holidays_service = require("../services/holidays.services");
+const courseconcepts_service = require("../services/courseconcepts.services");
 exports.create = (req, res, next) => {
-    holidays_service
+    courseconcepts_service
     .create(req.body)
     .then((response) =>
         res.status(200).send({
@@ -12,7 +12,7 @@ exports.create = (req, res, next) => {
 };
 
 exports.findAll = (req, res, next) => {
-    holidays_service
+    courseconcepts_service
     .getAll()
     .then((response) =>
         res.status(200).send({
@@ -23,29 +23,30 @@ exports.findAll = (req, res, next) => {
     .catch(next);
 };
 
-exports.Upcomingholiday = (req, res, next) => {
-    holidays_service
-    .upcoming()
-    .then((response) =>
+exports.getconcepts = (req, res, next) => {
+    if (req.body.courseLevelId !== null) {
+        courseconcepts_service
+        .getlevels(req.body.courseId, req.body.courseLevelId)
+        .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
             data: response,
         })
-    )
-    .catch(next);
+        ).catch(next);
+    } else {
+        courseconcepts_service
+        .getlevels(req.body.courseId, null)
+        .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+        ).catch(next);
+    }
 };
-
-exports.changeStatus = (req, res, next) => {
-    holidays_service
-    .changeStatus(req.params.id)
-    .then((response) =>
-        res.status(200).send({ message: "Success", data: response })
-    ).catch(next);
-};
-
 exports.findOne = (req, res, next) => {
-    holidays_service
-    .getById(req.params.id)
+    courseconcepts_service
+    .getById(req.body.id)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -54,9 +55,8 @@ exports.findOne = (req, res, next) => {
     )
     .catch(next);
 };
-
 exports.update = (req, res, next) => {
-    holidays_service
+    courseconcepts_service
     .update(req.body.id, req.body)
     .then((response) =>
         res.status(200).send({
@@ -66,8 +66,9 @@ exports.update = (req, res, next) => {
     )
     .catch(next);
 };
+
 exports.del = (req, res, next) => {
-    holidays_service
+    courseconcepts_service
     .del(req.params.id)
     .then((response) =>
         res.status(200).send({ message: "Success", data: response })
