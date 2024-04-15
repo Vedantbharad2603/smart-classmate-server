@@ -18,6 +18,7 @@ const coursesRoutes = require('./src/routes/courses.router');
 const courselevelsRoutes = require('./src/routes/courselevels.router');
 const courseconceptsRoutes = require('./src/routes/courseconcepts.router');
 const courseenrollmentRoutes = require('./src/routes/courseenrollment.router');
+const emailRoutes = require('./src/routes/email.router');
 
 // Create an Express application
 const app = express()
@@ -45,10 +46,12 @@ app.use("/courses", coursesRoutes)
 app.use("/courselevels", courselevelsRoutes)
 app.use("/courseenrollment", courseenrollmentRoutes)
 app.use("/courseconcepts", courseconceptsRoutes)
+app.use('/mail', emailRoutes);
 
 
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }))
+
 
 // Start the server and listen on the specified port
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
