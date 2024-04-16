@@ -5,7 +5,7 @@ module.exports = model;
 function model(sequelize) {
     return sequelize.define("course_enrollment", {
         enrollment_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
         },
         is_current_course: {
@@ -13,7 +13,7 @@ function model(sequelize) {
             allowNull: false,
         },
         last_month: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
         },
         course_status: {
