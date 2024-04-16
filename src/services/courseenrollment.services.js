@@ -26,9 +26,9 @@ async function update(idin, params) {
 
 async function create(params) {
     const existingCourseEnrollment = await db.CourseEnrollment.findOne({ 
-        where: { courseId : params.courseId , level_name: params.level_name}});
+        where: { studentdatumId : params.studentdatumId,is_current_course:1 }});
     if (existingCourseEnrollment) {
-        throw new Error("CourseEnrollment already exists.");
+        throw new Error("Student is Currently enrolled in other course.");
     }
     const courseenrollment = new db.CourseEnrollment(params);
     await courseenrollment.save();

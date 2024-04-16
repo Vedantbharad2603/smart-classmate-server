@@ -11,8 +11,9 @@ module.exports = {
 async function getAll() {
     return await db.Courses.findAll();
 }
-async function getById(id) {
-    const courses = await db.Courses.findByPk(id);
+async function getById(idin) {
+    const courses = await db.Courses.findOne({ 
+        where: { id: idin}});
     if (!courses) throw new Error("Courses not found");
     return courses;
 }

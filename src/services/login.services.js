@@ -137,15 +137,18 @@ async function checklogin(params) {
     if (!login) return "no login found";
     if (login.password !== params.password) return "incorrect password";
     let userdata;
+    let courseinfo;
     if (login.type == "student") {
         userdata = await getstudentatribute(login.id);
         if (!userdata) return "Student not found for this login";
+        courseinfo = await getCurrentCourse(userdata.id);
+        if (!courseinfo) return "Course not found for this login";
     }
     else {
         userdata = await getteacheratribute(login.id);
         if (!userdata) return "Teacher not found for this login";
     }
-    return { login, userdata };
+    return { login, userdata ,courseinfo};
 }
 
 async function getstudentatribute(idin) {
@@ -162,6 +165,13 @@ async function getteacheratribute(idin) {
     });
     if (!teacher) return "Login not found";
     return teacher;
+}
+
+async function getCurrentCourse(idin) {
+    const course = await db.CourseEnrollment.findOne({ 
+        where: { studentdatumId : idin,is_current_course:1 }});
+    if (!course) return "Course not found";
+    return course;
 }
 
 
