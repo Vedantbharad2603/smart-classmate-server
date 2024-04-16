@@ -168,10 +168,24 @@ async function getteacheratribute(idin) {
 }
 
 async function getCurrentCourse(idin) {
-    const course = await db.CourseEnrollment.findOne({ 
-        where: { studentdatumId : idin,is_current_course:1 }});
-    if (!course) return "Course not found";
-    return course;
+    const courseEnrollment = await db.CourseEnrollment.findOne({ 
+        where: { studentdatumId: idin, is_current_course: 1 }
+    });
+    if (!courseEnrollment) return "Course not found";
+
+    const courseId = courseEnrollment.courseId;
+    const courseName = await getcourseName(courseId);
+
+    return { ...courseEnrollment.dataValues, course_name: courseName };
+}
+
+async function getcourseName(idin) {
+    const course = await db.Courses.findOne({ 
+        where: { id: idin },
+        attributes: ['course_name']
+    });
+    if (!course) throw new Error("Course not found");
+    return course.course_name;
 }
 
 
