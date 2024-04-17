@@ -7,6 +7,7 @@ module.exports = {
     update,
     getStudnetHomework,
     getStudnetHomeworks,
+    listforcheckWork,
     del
 };
 async function getAll() {
@@ -19,10 +20,14 @@ async function getAll() {
 //     await attendance.save();
 //     return attendance;
 // }
-async function update(idin,params) {
+async function update(params) {
     // Get the existing attendance record
-    const existingHomework = await getStudnetHomework(idin);
-
+    const existingHomework = await db.Homework.findOne({
+        where: {
+            id: params.id
+        }
+    });
+    console.log(existingHomework);
     // If the record exists, update it and return
     if (existingHomework) {
         Object.assign(existingHomework, params);
@@ -55,8 +60,59 @@ async function getStudnetHomeworks(studid){
             studentdatumId : studid,
         },
     });
-    return studentHomework;
+
+    const result = await Promise.all(studentHomework.map(async (work, index) => {
+        const teachername = await getTeacherName(work.teacherdatumId);
+        let checkername = null;
+        if (work.checkerTeacherId !== null) {
+            checkername = await getTeacherName(work.checkerTeacherId);
+        }
+        return { ...work.dataValues, teachername: teachername, checkerTeacher: checkername };
+    }));
+    
+
+    return result;
 }
+
+async function listforcheckWork() {
+    const studentHomework = await db.Homework.findAll({
+        where: {
+            [Op.or]: [
+                { is_submited: false },
+                { remark: { [Op.is]: null } }
+            ],
+        },
+    });
+
+    const result = await Promise.all(studentHomework.map(async (work, index) => {
+        const studentname = await getStudentName(work.studentdatumId);
+        return { ...work.dataValues, student_name: studentname};
+    }));
+    return result;
+}
+
+async function getStudentName(idin) {
+    const student = await db.Student.findOne({
+        where: {
+            id: idin
+        },
+        attributes: ['full_name']
+    });
+    if (!student) return "Unknown";
+    return student.full_name;
+}
+
+async function getTeacherName(idin) {
+    const teacker = await db.Teacher.findOne({
+        where: {
+            id: idin
+        },
+        attributes: ['full_name']
+    });
+    if (!teacker) return "Unknown";
+    return teacker.full_name;
+}
+
 
 async function del(did){
     return await db.Homework.destroy({

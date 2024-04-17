@@ -5,6 +5,7 @@ module.exports = {
     getAll,
     getById,
     create,
+    upcoming,
     update,
     del
 };
@@ -15,6 +16,20 @@ async function getById(id) {
     const events = await db.Events.findByPk(id);
     if (!events) throw new Error("Events not found");
     return events;
+}
+
+async function upcoming() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return await db.Events.findAll({
+        where: {
+            event_date: {
+                [Op.gt]: today
+            }
+        },
+        order: [['event_date', 'ASC']],
+    });
 }
 
 async function update(idin, params) {

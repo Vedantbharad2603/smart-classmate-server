@@ -25,7 +25,7 @@ exports.findAll = (req, res, next) => {
 
 exports.giveStudentAllhomework = (req, res, next) => {
     homework_service
-    .getAll()
+    .getStudnetHomeworks(req.body.studid)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -35,6 +35,17 @@ exports.giveStudentAllhomework = (req, res, next) => {
     .catch(next);
 };
 
+exports.checkwork = (req, res, next) => {
+    homework_service
+    .listforcheckWork()
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+}
 exports.findOne = (req, res, next) => {
     homework_service
     .getStudnetHomework(req.params.id)
@@ -55,9 +66,10 @@ exports.findOne = (req, res, next) => {
 };
 
 
+
 exports.update = (req, res, next) => {
     homework_service
-    .update(req.params.id, req.body)
+    .update(req.body)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

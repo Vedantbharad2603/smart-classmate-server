@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.post("/", eventsController.create);
 router.get("/", eventsController.findAll);
+router.get("/upcoming", eventsController.upcomingEvent);
 router.get("/find/:id", eventsController.findOne);
 router.put("/update/:id", eventsController.update);
 // router.delete("/:id", eventsController.del);

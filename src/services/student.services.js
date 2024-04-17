@@ -4,15 +4,68 @@ const { Op, where } = require("sequelize");
 
 module.exports = {
     getAll,
+    getStudentWithActiveCourse,
     getById,
     create,
     update,
     del,
-    getteacheratribute,
+    getStudentAtribute,
 };
 async function getAll() {
-    return await db.Student.findAll();
+    const students = await db.Student.findAll();
+    return students;
 }
+
+async function getStudentWithActiveCourse() {
+    const students = await db.Student.findAll();
+
+    const loginIds = students.map(student => student.logindatumId);
+    const isActive = await getisActiveStatus(loginIds);
+
+    const result = await Promise.all(students.map(async (student, index) => {
+        const currentCourse = await getCurrentCourse(student.id);
+        return { ...student.dataValues, isActive: isActive[index].isActive, username: isActive[index].username, course_name: currentCourse.course_name };
+    }));
+
+    return result;
+}
+
+async function getisActiveStatus(loginIds) {
+    const logins = await db.Login.findAll({
+        where: { id: loginIds },
+        attributes: ['isActive', 'username']
+    });
+
+    return logins.map(login => ({
+        isActive: login.isActive,
+        username: login.username
+    }));
+}
+
+
+async function getCurrentCourse(studentId) {
+    console.log(studentId);
+    const courseEnrollment = await db.CourseEnrollment.findOne({ 
+        where: { studentdatumId: studentId, is_current_course: 1 }
+    });
+    if (!courseEnrollment) throw new Error("Course not found");
+
+    const courseId = courseEnrollment.courseId;
+    const courseName = await getCourseName(courseId);
+
+    return { course_name: courseName };
+}
+
+async function getCourseName(courseId) {
+    const course = await db.Courses.findOne({ 
+        where: { id: courseId },
+        attributes: ['course_name']
+    });
+    if (!course) throw new Error("Course not found");
+    return course.course_name;
+}
+
+
 // async function getById(id, callback) {
 //     getloginatribute(id)
 //     .then((response) => {
@@ -56,7 +109,7 @@ async function getloginatribute(id) {
     return login;
 }
 async function update(idin, params) {
-    const existingTeacher = await getteacheratribute(idin);
+    const existingTeacher = await getStudentAtribute(idin);
 
     // Validate email format
     if (params.email && !valid.isValidEmail(params.email)) {
@@ -88,7 +141,7 @@ async function update(idin, params) {
 //     return student;
 // }
 
-async function getteacheratribute(id) {
+async function getStudentAtribute(id) {
     const student = await db.Student.findByPk(id);
     if (!student) return "Student not found";
     return student;

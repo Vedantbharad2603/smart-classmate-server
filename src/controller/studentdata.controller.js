@@ -11,6 +11,18 @@ exports.addstud = (req, res, next) => {
     .catch(next);
 };
 
+
+exports.getStudentWithActive_Course = (req, res, next) => {
+    student_service
+    .getStudentWithActiveCourse()
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
 exports.findAll = (req, res, next) => {
     student_service
     .getAll()

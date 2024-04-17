@@ -59,6 +59,7 @@ async function initialize() {
   // For Homework references
   db.Student.hasMany(db.Homework, { foreignKey: { allowNull: false } });
   db.Teacher.hasMany(db.Homework, { foreignKey: { allowNull: false } });
+  db.Teacher.hasMany(db.Homework, { foreignKey: { allowNull: true,name: 'checkerTeacherId' } });
 
   // For CourseLevels references
   db.Courses.hasMany(db.CourseLevels, { foreignKey: { allowNull: false } });
@@ -70,6 +71,7 @@ async function initialize() {
   // For CourseEnrollment references
   db.Student.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: false } });
   db.Courses.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: false } });
+  db.CourseLevels.hasMany(db.CourseEnrollment, { foreignKey: { allowNull: true } });
 
   await sequelize.sync({ alter: false });
 }
