@@ -108,8 +108,8 @@ async function getloginatribute(id) {
     if (!login) return "Login not found";
     return login;
 }
-async function update(idin, params) {
-    const existingTeacher = await getStudentAtribute(idin);
+async function update(params) {
+    const existingTeacher = await getStudentAtribute(params.id);
 
     // Validate email format
     if (params.email && !valid.isValidEmail(params.email)) {
