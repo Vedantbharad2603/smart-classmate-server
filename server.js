@@ -33,20 +33,20 @@ app.use(express.json())
 app.use(cors())
 
 // Define routes 
-app.use("/login", logindataRoutes)
-app.use("/teacher", teacherdataRoutes)
-app.use("/shift", shiftRoutes)
-app.use("/student", studentRoutes)
-app.use("/attendance", attendanceRoutes)
-app.use("/book", bookuploadRoutes)
-app.use("/events", eventsRoutes)
-app.use("/holidays", holidaysRoutes)
-app.use("/homework", homeworkRoutes)
-app.use("/courses", coursesRoutes)
-app.use("/courselevels", courselevelsRoutes)
-app.use("/courseenrollment", courseenrollmentRoutes)
-app.use("/courseconcepts", courseconceptsRoutes)
-app.use('/mail', emailRoutes);
+app.use("/api/login", logindataRoutes)
+app.use("/api/teacher", teacherdataRoutes)
+app.use("/api/shift", shiftRoutes)
+app.use("/api/student", studentRoutes)
+app.use("/api/attendance", attendanceRoutes)
+app.use("/api/book", bookuploadRoutes)
+app.use("/api/events", eventsRoutes)
+app.use("/api/holidays", holidaysRoutes)
+app.use("/api/homework", homeworkRoutes)
+app.use("/api/courses", coursesRoutes)
+app.use("/api/courselevels", courselevelsRoutes)
+app.use("/api/courseenrollment", courseenrollmentRoutes)
+app.use("/api/courseconcepts", courseconceptsRoutes)
+app.use('/api/mail', emailRoutes);
 
 
 // Middleware to parse URL-encoded bodies

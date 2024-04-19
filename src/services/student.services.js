@@ -86,19 +86,25 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // // Validate email format
-    // if (params.email && !valid.isValidEmail(params.email)) {
-    //     throw new Error('Invalid email format');
-    // }
+    // Validate email format
+    const student1= await db.Student.findOne({
+        where:{
+            email:params.email
+        }
+    });
 
-    // // Validate mobile number format
-    // if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
-    //     throw new Error('Invalid mobile number format');
-    // }
-    console.log(params);
-    const student = new db.Student(params);
-    await student.save();
-    return student;
+    if (params.email && !valid.isValidEmail(params.email)) {
+        throw new Error('Invalid email format');
+    }
+    // Validate mobile number format
+    if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
+        throw new Error('Invalid mobile number format');
+    }
+    if (student1) {
+        const student = new db.Student(params);
+        await student.save();
+        return student;
+    }
 }
 
 
@@ -109,7 +115,7 @@ async function getloginatribute(id) {
     return login;
 }
 async function update(params) {
-    const existingTeacher = await getStudentAtribute(params.id);
+    const existingStudent = await getStudentAtribute(params.id);
 
     // Validate email format
     if (params.email && !valid.isValidEmail(params.email)) {
@@ -120,27 +126,12 @@ async function update(params) {
     if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
         throw new Error('Invalid mobile number format');
     }
-
-    Object.assign(existingTeacher, params);
-    await existingTeacher.save();
-    return existingTeacher;
+    if (existingStudent) {
+        Object.assign(existingStudent, params);
+        await existingStudent.save();
+        return existingStudent;
+    }
 }
-// async function create(params) {
-//     // Validate email format
-//     if (params.email && !valid.isValidEmail(params.email)) {
-//         throw new Error('Invalid email format');
-//     }
-
-//     // Validate mobile number format
-//     if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
-//         throw new Error('Invalid mobile number format');
-//     }
-    
-//     const student = new db.Student(params);
-//     await student.save();
-//     return student;
-// }
-
 async function getStudentAtribute(id) {
     const student = await db.Student.findByPk(id);
     if (!student) return "Student not found";
