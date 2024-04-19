@@ -5,6 +5,7 @@ module.exports = {
     getAll,
     getById,
     create,
+    create2,
     update,
     getlevels,
     del,
@@ -46,6 +47,27 @@ async function create(params) {
 
     const maxConceptIndex = await db.CourseConcepts.max('concept_index', {
         where: { courseLevelId: params.courseLevelId,courseId: params.courseId }
+    });
+
+    const courseconcepts = new db.CourseConcepts({
+        ...params,
+        concept_index: (maxConceptIndex || 0) + 1
+    });
+
+    await courseconcepts.save();
+    return courseconcepts;
+}
+async function create2(params) {
+    const existingCourseConcepts = await db.CourseConcepts.findOne({ 
+        where: { courseId: params.courseId,concept_name:params.concept_name }
+    });
+
+    if (existingCourseConcepts) {
+        throw new Error("Course Concept already exists.");
+    }
+
+    const maxConceptIndex = await db.CourseConcepts.max('concept_index', {
+        where: {courseId: params.courseId }
     });
 
     const courseconcepts = new db.CourseConcepts({

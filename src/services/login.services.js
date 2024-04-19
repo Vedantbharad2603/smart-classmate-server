@@ -5,7 +5,7 @@ const { link } = require("../routes/logindata.router");
 
 module.exports = {
     getAll,
-    getById,
+    getByEmail,
     getTeacher,
     checklogin,
     create,
@@ -22,14 +22,6 @@ async function getAll() {
 }
 
 async function getTeacher() {
-    // return
-    //  await db.Login.findAll({
-    //     where: {
-    //         type: {
-    //             [Op.not]: 'student'
-    //         }
-    //     }
-    // });
     const login = await db.Login.findAll({
         where: {
             type: {
@@ -37,11 +29,6 @@ async function getTeacher() {
             }
         },
     });
-    // console.log(login);
-    // let userdata;
-    // userdata = await getteacheratribute(login.id);
-    // if (!userdata) return "Teacher not found for this login";
-    // return { login, userdata };
     const userDataPromises = login.map(async (login) => {
         if (login.type !== 'student') {
             const userdata = await getteacheratribute(login.id);
@@ -53,12 +40,26 @@ async function getTeacher() {
     const userData = await Promise.all(userDataPromises);
     return userData.filter(Boolean);
 }
-async function getById(inid) {
+async function getByEmail(emailin) {
     const login = await db.Login.findOne({
-        where: { id: inid},
+        where: { email: emailin, isActive: true},
     });
     if (!login) throw new Error("User not found");
-    return login;
+
+    let userdata;
+    let courseinfo;
+    if (login.type == "student") {
+        userdata = await getstudentatribute(login.id);
+        if (!userdata) return "Student not found for this login";
+        courseinfo = await getCurrentCourse(userdata.id);
+        if (!courseinfo) return "Course not found for this login";
+    }
+    else {
+        userdata = await getteacheratribute(login.id);
+        if (!userdata) return "Teacher not found for this login";
+    }
+    console.log(login, userdata ,courseinfo);
+    return { login, userdata ,courseinfo};
 }
 
 async function getByUname(uname) {
@@ -69,7 +70,7 @@ async function getByUname(uname) {
     return login;
 }
 async function update(idin, params) {
-    const { username, password } = params;
+    const { username, password ,email} = params;
     const existingLogin = await getloginatribute(idin);
 
     if (existingLogin.username !== username) {
@@ -78,6 +79,10 @@ async function update(idin, params) {
     const userWithSameUsername = await login_service.findByUsername(username);
     if (userWithSameUsername && userWithSameUsername.id !== idin) {
         throw new Error("Username already exists in the database.");
+    }
+    const userWithSameemail = await login_service.findByEmail(email);
+    if (userWithSameemail && userWithSameemail.id !== idin) {
+        throw new Error("Email already exists.");
     }
 
     // Validate password format
@@ -90,7 +95,6 @@ async function update(idin, params) {
     return existingLogin;
 }
 
-
 async function create(params) {
     const {password } = params;
 
@@ -98,6 +102,11 @@ async function create(params) {
         where: { username: params.username}});
     if (existingLogin) {
         throw new Error("Username already exists.");
+    }
+
+    const existingEmail = await db.Login.findOne({ where: { email: params.email } });
+    if (existingEmail) {
+        throw new Error("Email already exists.");
     }
 
     // Validate password format
@@ -109,6 +118,7 @@ async function create(params) {
     await login.save();
     return login;
 }
+
 
 
 async function changeStatus(inid) {
@@ -132,7 +142,12 @@ async function changeType(inid,typein) {
 
 async function checklogin(params) {
     const login = await db.Login.findOne({
-        where: { username: params.username, isActive: true },
+        where: {
+            [Op.or]: [
+                { username: params.username, isActive: true },
+                {  email: params.username, isActive: true }
+            ]
+        },
     });
     if (!login) return "no login found";
     if (login.password !== params.password) return "incorrect password";

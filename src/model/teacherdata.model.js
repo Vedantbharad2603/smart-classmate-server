@@ -8,10 +8,6 @@ function model(sequelize) {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         mobile_number: {
             type: DataTypes.STRING,
             allowNull: false,

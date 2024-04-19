@@ -37,7 +37,7 @@ exports.findteacher = (req, res, next) => {
 
 exports.findOne = (req, res, next) => {
     login_service
-    .getById(req.params.id)
+    .getByEmail(req.body.email)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

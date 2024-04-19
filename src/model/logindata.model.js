@@ -16,6 +16,10 @@ function model(sequelize) {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         type: {
             type: DataTypes.STRING,
             allowNull: false,

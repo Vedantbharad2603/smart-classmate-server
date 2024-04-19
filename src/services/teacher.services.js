@@ -65,11 +65,6 @@ async function update(idin, params) {
     return existingTeacher;
 }
 async function create(params) {
-    // Validate email format
-    if (params.email && !valid.isValidEmail(params.email)) {
-        throw new Error('Invalid email format');
-    }
-
     // Validate mobile number format
     if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
         throw new Error('Invalid mobile number format');

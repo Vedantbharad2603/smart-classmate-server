@@ -1,14 +1,26 @@
 const courseconcepts_service = require("../services/courseconcepts.services");
 exports.create = (req, res, next) => {
-    courseconcepts_service
-    .create(req.body)
-    .then((response) =>
-        res.status(200).send({
-            message: typeof response === "string" ? "Error" : "Success",
-            data: response,
-        })
-    )
-    .catch(next);
+    if (req.body.courseLevelId !== undefined) {
+        courseconcepts_service
+        .create(req.body)
+        .then((response) =>
+            res.status(200).send({
+                message: typeof response === "string" ? "Error" : "Success",
+                data: response,
+            })
+        )
+        .catch(next);
+    } else {
+        courseconcepts_service
+        .create2(req.body)
+        .then((response) =>
+            res.status(200).send({
+                message: typeof response === "string" ? "Error" : "Success",
+                data: response,
+            })
+        )
+        .catch(next);
+    }
 };
 
 exports.findAll = (req, res, next) => {
@@ -24,7 +36,7 @@ exports.findAll = (req, res, next) => {
 };
 
 exports.getconcepts = (req, res, next) => {
-    if (req.body.courseLevelId !== null) {
+    if (req.body.courseLevelId !== undefined) {
         courseconcepts_service
         .getlevels(req.body.courseId, req.body.courseLevelId)
         .then((response) =>

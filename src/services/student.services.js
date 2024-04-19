@@ -86,25 +86,14 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // Validate email format
-    const student1= await db.Student.findOne({
-        where:{
-            email:params.email
-        }
-    });
-
-    if (params.email && !valid.isValidEmail(params.email)) {
-        throw new Error('Invalid email format');
-    }
+    
     // Validate mobile number format
     if (params.mobile_number && !valid.isValidMobileNumber(params.mobile_number)) {
         throw new Error('Invalid mobile number format');
     }
-    if (student1) {
-        const student = new db.Student(params);
-        await student.save();
-        return student;
-    }
+    const student = new db.Student(params);
+    await student.save();
+    return student;
 }
 
 
