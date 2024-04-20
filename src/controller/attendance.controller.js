@@ -1,7 +1,7 @@
 const attendance_service = require("../services/attendance.services");
 exports.create = (req, res, next) => {
     attendance_service
-    .create(req.body)
+    .create()
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -23,6 +23,19 @@ exports.findAll = (req, res, next) => {
     .catch(next);
 };
 
+
+exports.getToday = (req, res, next) => {
+    attendance_service
+    .getAllTodayAttendance()
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
+
 exports.makeattendance = (req, res, next) => {
     attendance_service
     .getAllactiveStudent()
@@ -35,17 +48,6 @@ exports.makeattendance = (req, res, next) => {
     .catch(next);
 };
 
-// exports.makeattendance = (req, res, next) => {
-//     attendance_service
-//     .createtodayattendance()
-//     .then((response) =>
-//         res.status(200).send({
-//             message: typeof response === "string" ? "Error" : "Success",
-//             data: response,
-//         })
-//     )
-//     .catch(next);
-// };
 
 exports.findOne = (req, res, next) => {
     attendance_service

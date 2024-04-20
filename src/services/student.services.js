@@ -44,7 +44,6 @@ async function getisActiveStatus(loginIds) {
 
 
 async function getCurrentCourse(studentId) {
-    console.log(studentId);
     const courseEnrollment = await db.CourseEnrollment.findOne({ 
         where: { studentdatumId: studentId, is_current_course: 1 }
     });
