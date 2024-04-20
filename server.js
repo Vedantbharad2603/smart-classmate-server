@@ -24,7 +24,7 @@ const emailRoutes = require('./src/routes/email.router');
 const app = express()
 
 // Set the port
-const port = 3002
+const port = 3000
 
 // Middleware to parse JSON bodies
 app.use(express.json())
