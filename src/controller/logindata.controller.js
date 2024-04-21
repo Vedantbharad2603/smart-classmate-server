@@ -23,6 +23,18 @@ exports.findAll = (req, res, next) => {
     .catch(next);
 };
 
+exports.studCount = (req, res, next) => {
+    login_service
+    .studentcount()
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
+
 exports.findteacher = (req, res, next) => {
     login_service
     .getTeacher()

@@ -11,6 +11,7 @@ module.exports = {
     create,
     update,
     del,
+    studentcount,
     changeType,
     changeStatus,
     getteacheratribute,
@@ -20,6 +21,13 @@ module.exports = {
 async function getAll() {
     return await db.Login.findAll();
 }
+
+async function studentcount() {
+    return await db.Login.count({
+        where: { type: 'student' }
+    });
+}
+
 
 async function getTeacher() {
     const login = await db.Login.findAll({
