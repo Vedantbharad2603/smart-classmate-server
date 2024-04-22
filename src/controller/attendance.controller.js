@@ -51,7 +51,7 @@ exports.makeattendance = (req, res, next) => {
 
 exports.findOne = (req, res, next) => {
     attendance_service
-    .getStudnetAttendance(req.params.id)
+    .getStudnetAttendance(req.body.id)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -63,7 +63,7 @@ exports.findOne = (req, res, next) => {
 
 exports.update = (req, res, next) => {
     attendance_service
-    .update(req.params.id, req.body)
+    .updateMultiple(req.body)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

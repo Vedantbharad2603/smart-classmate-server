@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 module.exports = {
     getAll,
     create,
-    update,
+    updateMultiple,
     getStudnetAttendance,
     getAllTodayAttendance,
     del
@@ -19,25 +19,27 @@ async function getAll() {
 //     await attendance.save();
 //     return attendance;
 // }
-async function update(params) {
-    // Get the existing attendance record
-    const existingAttendance = await db.Attendance.findOne({
-        where: {
-            studentdatumId: params.studentdatumId,
-            date: params.date
-        },
-    });
+async function updateMultiple(records) {
+    let updatedRecords = [];
 
-    // If the record exists, update it and return
-    if (existingAttendance) {
-        Object.assign(existingAttendance, params);
-        await existingAttendance.save();
-        return existingAttendance;
+    for (let record of records) {
+        const existingAttendance = await db.Attendance.findOne({
+            where: {
+                id: record.id,
+            },
+        });
+
+        // If the record exists and the status is different, update it
+        if (existingAttendance && existingAttendance.status !== record.status) {
+            Object.assign(existingAttendance, record);
+            await existingAttendance.save();
+            updatedRecords.push(existingAttendance);
+        }
     }
 
-    // If the record does not exist, return null or throw an error
-    return null; // or throw new Error("Attendance record not found");
+    return updatedRecords;
 }
+
 
 async function getActiveStudentsid() {
     const logins = await db.Login.findAll({
