@@ -8,7 +8,7 @@ router.get("/", attendanceController.findAll);
 router.put("/update", attendanceController.update);
 router.get("/getToday", attendanceController.getToday);
 
-router.get("/student", attendanceController.findOne);
+router.post("/student", attendanceController.giveStudAttendance);
 router.get("/givetoday", attendanceController.makeattendance);
 // router.delete("/:id", attendanceController.del);
 module.exports = router;

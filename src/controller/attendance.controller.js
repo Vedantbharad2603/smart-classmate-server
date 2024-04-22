@@ -49,7 +49,7 @@ exports.makeattendance = (req, res, next) => {
 };
 
 
-exports.findOne = (req, res, next) => {
+exports.giveStudAttendance = (req, res, next) => {
     attendance_service
     .getStudnetAttendance(req.body.id)
     .then((response) =>
