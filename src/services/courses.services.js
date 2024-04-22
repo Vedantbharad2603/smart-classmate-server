@@ -1,9 +1,10 @@
 const db = require("../helper/db.helper");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 module.exports = {
     getAll,
     getById,
+    getlevelCourse,
     create,
     update,
     del,
@@ -11,6 +12,14 @@ module.exports = {
 async function getAll() {
     return await db.Courses.findAll();
 }
+
+async function getlevelCourse() {
+    return await db.Courses.findAll({
+        where: { has_levels: true },
+        attributes: ['id', 'course_name']
+    });
+}
+
 async function getById(idin) {
     const courses = await db.Courses.findOne({ 
         where: { id: idin}});
