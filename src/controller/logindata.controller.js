@@ -69,6 +69,18 @@ exports.findOnebyusername = (req, res, next) => {
     )
     .catch(next);
 };
+
+exports.getStudinfo = (req, res, next) => {
+    login_service
+    .givestudentDetail(req.body.id)
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
 exports.check = (req, res, next) => {
     login_service
     .checklogin(req.body)

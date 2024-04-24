@@ -16,7 +16,6 @@ async function getAll() {
     return shifts;
 }
 async function getById(idin) {
-    console.log(idin);
     const shift = await db.Shift.findOne({
         where:{
         id:idin

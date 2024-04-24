@@ -12,6 +12,7 @@ module.exports = {
     update,
     del,
     studentcount,
+    givestudentDetail,
     changeType,
     changeStatus,
     getteacheratribute,
@@ -173,6 +174,56 @@ async function checklogin(params) {
     }
     return { login, userdata ,courseinfo};
 }
+async function givestudentDetail(idin){
+    let userdata;
+    let login;
+    let courseinfo;
+    let shift;
+
+    userdata = await db.Student.findOne({
+        where:{id:idin}
+    });
+    if (!userdata) return "Student not found";
+
+    login = await db.Login.findOne({
+        where: {
+            id:userdata.logindatumId
+        },
+    });
+    if (!login) return "Student not found in login";
+
+    courseinfo = await getCurrentCourse(userdata.id);
+    if (!courseinfo) return "Course not found for this Student";
+
+    shift = await db.Shift.findOne({
+        where:{
+            id:userdata.shiftdatumId
+        }
+    });
+
+    return { login, userdata, courseinfo, shift };
+}
+// async function givestudentDetail(idin){
+//     let userdata;
+//     let login;
+//     let courseinfo;
+//     userdata = await db.Student.findOne({
+//         where:{id:idin}
+        
+//     });
+//     if (!userdata) return "Student not found";
+//     login = await db.Login.findOne({
+//         where: {
+//             id:userdata.logindatumId
+//         },
+//     });
+//     if (!login) return "Student not found in login";
+//     courseinfo = await getCurrentCourse(userdata.id);
+//     if (!courseinfo) return "Course not found for this Student";
+
+    
+//     return { login, userdata ,courseinfo};
+// }
 
 async function getstudentatribute(idin) {
     const student = await db.Student.findOne({

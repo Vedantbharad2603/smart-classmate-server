@@ -9,6 +9,7 @@ router.get("/getStudentCount", logindataController.studCount);
 router.post("/find", logindataController.findOne);
 router.post("/username", logindataController.findOnebyusername);
 router.post("/check", logindataController.check);
+router.post("/getStudProfile", logindataController.getStudinfo);
 router.put("/change", logindataController.changeUserStatus);
 router.put("/changeType", logindataController.changeType);
 router.put("/update/:id", logindataController.updatelogin);
