@@ -30,7 +30,7 @@ exports.findAll = (req, res, next) => {
 };
 exports.findOne = (req, res, next) => {
     shift_service
-    .getById(req.query.id)
+    .getById(req.body.id)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

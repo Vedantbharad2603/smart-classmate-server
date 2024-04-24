@@ -29,12 +29,10 @@ async function initialize() {
   });
 
   db.Login = require("../model/logindata.model")(sequelize);
-  // db.Address = require("../model/address.model")(sequelize);
   db.Teacher = require("../model/teacherdata.model")(sequelize);
   db.Shift = require("../model/shiftdata.model")(sequelize);
   db.Student = require("../model/studentdata.model")(sequelize);
   db.Attendance = require("../model/attendance.model")(sequelize);
-  db.BookUpload = require("../model/book_upload.model")(sequelize);
   db.Events = require("../model/events.model")(sequelize);
   db.Holidays = require("../model/holidays.model")(sequelize);
   db.Homework = require("../model/homework.model")(sequelize);

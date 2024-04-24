@@ -45,7 +45,7 @@ exports.changeStatus = (req, res, next) => {
 
 exports.findOne = (req, res, next) => {
     holidays_service
-    .getById(req.params.id)
+    .getById(req.body.id)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

@@ -48,7 +48,7 @@ exports.checkwork = (req, res, next) => {
 }
 exports.findOne = (req, res, next) => {
     homework_service
-    .getStudnetHomework(req.params.id)
+    .getStudnetHomework(req.body.id)
     .then((response) => {
         if (!response) {
             return res.status(404).send({

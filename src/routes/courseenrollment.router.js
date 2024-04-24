@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post("/", courseenrollmentController.create);
 router.get("/", courseenrollmentController.findAll);
-router.get("/find",courseenrollmentController.findOne);
+router.post("/find",courseenrollmentController.findOne);
 router.put("/update", courseenrollmentController.update);
 // router.delete("/:id", courseenrollmentController.del);
 module.exports = router;
