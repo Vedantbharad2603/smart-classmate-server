@@ -10,7 +10,7 @@ const MYSQL_DB_CONFIG = {
 //     USER: "root",
 //     PORT: 3306,
 //     PASSWORD: "",
-//     DB: "main_loreto_db",
+//     DB: "smart_classmate_db",
 // };
 module.exports = {
     MYSQL_DB_CONFIG,

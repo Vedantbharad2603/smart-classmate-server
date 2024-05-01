@@ -47,7 +47,7 @@ exports.findOne = (req, res, next) => {
 };
 exports.update = (req, res, next) => {
     shift_service
-    .update(req.query.id, req.body)
+    .update(req.body.id, req.body)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

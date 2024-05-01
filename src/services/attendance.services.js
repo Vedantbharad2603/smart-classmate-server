@@ -43,15 +43,15 @@ async function updateMultiple(records) {
 
 async function getActiveStudentsid() {
     const logins = await db.Login.findAll({
-        where: { isActive: true ,type:"student"},
+        where: { is_active: true ,type:"student"},
         attributes: ['id']
     });
     return logins.map(login => login.id);
 }
 
-async function getStudentsInfo(loginIds) {
+async function getStudentsInfo(login_ids) {
     const students = await db.Student.findAll({
-        where: { logindatumId: { [Op.in]: loginIds } },
+        where: { logindatum_id: { [Op.in]: login_ids } },
         attributes: ['id']
     });
     return students.map(student => student.id);
@@ -60,11 +60,11 @@ async function getStudentsInfo(loginIds) {
 async function create() {
     const activeStudentIds= await getActiveStudentsid();
     const studentInfo = await getStudentsInfo(activeStudentIds);
-    const attendancePromises = studentInfo.map(async studentId => {
+    const attendancePromises = studentInfo.map(async student_id => {
         const existingAttendance = await db.Attendance.findOne({
             where: {
                 date: new Date().toISOString().split('T')[0],
-                studentdatumId: studentId
+                studentdatum_id: student_id
             }
         });
 
@@ -72,7 +72,7 @@ async function create() {
             return db.Attendance.create({
                 date: new Date().toISOString().split('T')[0], // Date only, no time
                 status: 4,
-                studentdatumId: studentId
+                studentdatum_id: student_id
             });
         } else {
             return null; // Return null for existing rows
@@ -90,26 +90,26 @@ async function getAllTodayAttendance(){
         },
     });
     const result = await Promise.all(studentAttendance.map(async (student, index) => {
-        const studinfo = await getStudentname(student.studentdatumId);
-        return { ...student.dataValues, full_name: studinfo.full_name,shiftdatumId: studinfo.shiftdatumId };
+        const studinfo = await getStudentname(student.studentdatum_id);
+        return { ...student.dataValues, full_name: studinfo.full_name,shiftdatum_id: studinfo.shiftdatum_id };
     }));
     return result;
 }
-async function getStudentname(studentId) {
+async function getStudentname(student_id) {
     const student = await db.Student.findOne({
-        where: { id: studentId },
-        attributes: ['full_name','shiftdatumId']
+        where: { id: student_id },
+        attributes: ['full_name','shiftdatum_id']
     });
     return {
         full_name: student.full_name,
-        shiftdatumId: student.shiftdatumId
+        shiftdatum_id: student.shiftdatum_id
     };
 }
 
 async function getStudnetAttendance(id){
     const studentAttendance = await db.Attendance.findAll({
         where: {
-            studentdatumId: id,
+            studentdatum_id: id,
         },
     });
     return studentAttendance;

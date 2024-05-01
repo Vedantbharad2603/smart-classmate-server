@@ -26,20 +26,9 @@ async function getById(id) {
     const teacher = await db.Teacher.findByPk(id);
     if (!teacher) throw new Error("Teacher not found");
 
-    if (!teacher) return "Teacher not found for this login";
-    address = await getaddressatribute(teacher.addressId);
-    if (!address) return "Address not found for this teacher";
-    login = await getloginatribute(teacher.logindatumId);
+    login = await getloginatribute(teacher.logindatum_id);
     if (!login) return "Login data not found for this teacher";
-    return { teacher,login, address };
-}
-
-async function getaddressatribute(idin) {
-    const address = await db.Address.findOne({
-        where:{id :idin}
-    });
-    if (!address) return "Address not found";
-    return address;
+    return { teacher,login};
 }
 
 async function getloginatribute(id) {

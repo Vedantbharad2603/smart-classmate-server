@@ -4,15 +4,15 @@ module.exports = model;
 
 function model(sequelize) {
     return sequelize.define("shiftdata", {
-        shiftName: {
+        shift_name: {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        startTime: {
+        start_time: {
             type: DataTypes.TIME,
             allowNull: true,
         },
-        endTime: {
+        end_time: {
             type: DataTypes.TIME,
             allowNull: true,
         },

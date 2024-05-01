@@ -38,7 +38,7 @@ exports.findAll = (req, res, next) => {
 exports.getconcepts = (req, res, next) => {
     if (req.body.courseLevelId !== undefined) {
         courseconcepts_service
-        .getlevels(req.body.courseId, req.body.courseLevelId)
+        .getlevels(req.body.course_id, req.body.course_level_id)
         .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
@@ -47,7 +47,7 @@ exports.getconcepts = (req, res, next) => {
         ).catch(next);
     } else {
         courseconcepts_service
-        .getlevels(req.body.courseId, null)
+        .getlevels(req.body.course_id, null)
         .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

@@ -51,7 +51,7 @@ async function getTeacher() {
 }
 async function getByEmail(emailin) {
     const login = await db.Login.findOne({
-        where: { email: emailin, isActive: true},
+        where: { email: emailin, is_active: true},
     });
     if (!login) throw new Error("User not found");
 
@@ -67,7 +67,6 @@ async function getByEmail(emailin) {
         userdata = await getteacheratribute(login.id);
         if (!userdata) return "Teacher not found for this login";
     }
-    console.log(login, userdata ,courseinfo);
     return { login, userdata ,courseinfo};
 }
 
@@ -132,12 +131,10 @@ async function create(params) {
 
 async function changeStatus(inid) {
     const login = await getloginatribute(inid);
-    if (login.isActive) {
-        login.isActive = false;
-        console.log("User is Inactivate");
+    if (login.is_active) {
+        login.is_active = false;
     } else {
-        login.isActive = true;
-        console.log("User is Activate");
+        login.is_active = true;
     }
     await login.save();
     return login;
@@ -153,8 +150,8 @@ async function checklogin(params) {
     const login = await db.Login.findOne({
         where: {
             [Op.or]: [
-                { username: params.username, isActive: true },
-                {  email: params.username, isActive: true }
+                { username: params.username, is_active: true },
+                {  email: params.username, is_active: true }
             ]
         },
     });
@@ -187,7 +184,7 @@ async function givestudentDetail(idin){
 
     login = await db.Login.findOne({
         where: {
-            id:userdata.logindatumId
+            id:userdata.logindatum_id
         },
     });
     if (!login) return "Student not found in login";
@@ -197,7 +194,7 @@ async function givestudentDetail(idin){
 
     shift = await db.Shift.findOne({
         where:{
-            id:userdata.shiftdatumId
+            id:userdata.shiftdatum_id
         }
     });
 
@@ -214,7 +211,7 @@ async function givestudentDetail(idin){
 //     if (!userdata) return "Student not found";
 //     login = await db.Login.findOne({
 //         where: {
-//             id:userdata.logindatumId
+//             id:userdata.logindatum_id
 //         },
 //     });
 //     if (!login) return "Student not found in login";
@@ -227,7 +224,7 @@ async function givestudentDetail(idin){
 
 async function getstudentatribute(idin) {
     const student = await db.Student.findOne({
-        where:{logindatumId :idin}
+        where:{logindatum_id :idin}
     });
     if (!student) return "Login not found";
     return student;
@@ -235,7 +232,7 @@ async function getstudentatribute(idin) {
 
 async function getteacheratribute(idin) {
     const teacher = await db.Teacher.findOne({
-        where:{logindatumId :idin}
+        where:{logindatum_id :idin}
     });
     if (!teacher) return "Login not found";
     return teacher;
@@ -243,11 +240,11 @@ async function getteacheratribute(idin) {
 
 async function getCurrentCourse(idin) {
     const courseEnrollment = await db.CourseEnrollment.findOne({ 
-        where: { studentdatumId: idin, is_current_course: 1 }
+        where: { studentdatum_id: idin, is_current_course: 1 }
     });
     if (!courseEnrollment) return "Course not found";
 
-    const courseId = courseEnrollment.courseId;
+    const courseId = courseEnrollment.course_id;
     const courseName = await getcourseName(courseId);
 
     return { ...courseEnrollment.dataValues, course_name: courseName };

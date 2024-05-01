@@ -15,7 +15,7 @@ async function getAll() {
 
 async function getlevels(idin) {
     return await db.CourseLevels.findAll({ 
-        where: { courseId : idin}});
+        where: { course_id : idin}});
 }
 async function getById(id) {
     const courselevels = await db.CourseLevels.findByPk(id);
@@ -32,7 +32,7 @@ async function update(idin, params) {
 
 async function create(params) {
     const existingCourseLevels = await db.CourseLevels.findOne({ 
-        where: { courseId: params.courseId, level_name: params.level_name }
+        where: { course_id: params.course_id, level_name: params.level_name }
     });
 
     if (existingCourseLevels) {
@@ -40,7 +40,7 @@ async function create(params) {
     }
 
     const maxLevelIndex = await db.CourseLevels.max('level_index', {
-        where: { courseId: params.courseId }
+        where: { course_id: params.course_id }
     });
 
     const courselevels = new db.CourseLevels({

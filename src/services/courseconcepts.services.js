@@ -14,10 +14,10 @@ async function getAll() {
     return await db.CourseConcepts.findAll();
 }
 
-async function getlevels(courseIdin, courseLevelIdin) {
-    let whereClause = { courseId: courseIdin };
-    if (courseLevelIdin !== null) {
-        whereClause.courseLevelId = courseLevelIdin;
+async function getlevels(course_idin, course_level_idin) {
+    let whereClause = { course_id: course_idin };
+    if (course_level_idin !== null) {
+        whereClause.course_level_id = course_level_idin;
     }
 
     return await db.CourseConcepts.findAll({ where: whereClause });
@@ -38,7 +38,7 @@ async function update(idin, params) {
 
 async function create(params) {
     const existingCourseConcepts = await db.CourseConcepts.findOne({ 
-        where: { courseId: params.courseId, courseLevelId: params.courseLevelId,concept_name:params.concept_name }
+        where: { course_id: params.course_id, course_level_id: params.course_level_id,concept_name:params.concept_name }
     });
 
     if (existingCourseConcepts) {
@@ -46,7 +46,7 @@ async function create(params) {
     }
 
     const maxConceptIndex = await db.CourseConcepts.max('concept_index', {
-        where: { courseLevelId: params.courseLevelId,courseId: params.courseId }
+        where: { course_level_id: params.course_level_id,course_id: params.course_id }
     });
 
     const courseconcepts = new db.CourseConcepts({
@@ -59,7 +59,7 @@ async function create(params) {
 }
 async function create2(params) {
     const existingCourseConcepts = await db.CourseConcepts.findOne({ 
-        where: { courseId: params.courseId,concept_name:params.concept_name }
+        where: { course_id: params.course_id,concept_name:params.concept_name }
     });
 
     if (existingCourseConcepts) {
@@ -67,7 +67,7 @@ async function create2(params) {
     }
 
     const maxConceptIndex = await db.CourseConcepts.max('concept_index', {
-        where: {courseId: params.courseId }
+        where: {course_id: params.course_id }
     });
 
     const courseconcepts = new db.CourseConcepts({

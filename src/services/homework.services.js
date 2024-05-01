@@ -57,17 +57,17 @@ async function getStudnetHomework(idin){
 async function getStudnetHomeworks(studid){
     const studentHomework = await db.Homework.findAll({
         where: {
-            studentdatumId : studid,
+            studentdatum_id : studid,
         },
     });
 
     const result = await Promise.all(studentHomework.map(async (work, index) => {
-        const teachername = await getTeacherName(work.teacherdatumId);
+        const teachername = await getTeacherName(work.teacherdatum_id);
         let checkername = null;
-        if (work.checkerTeacherId !== null) {
-            checkername = await getTeacherName(work.checkerTeacherId);
+        if (work.checker_teacher_id !== null) {
+            checkername = await getTeacherName(work.checker_teacher_id);
         }
-        return { ...work.dataValues, teachername: teachername, checkerTeacher: checkername };
+        return { ...work.dataValues, teachername: teachername, checker_teacher: checkername };
     }));
     
 
@@ -85,7 +85,7 @@ async function listforcheckWork() {
     });
 
     const result = await Promise.all(studentHomework.map(async (work, index) => {
-        const studentname = await getStudentName(work.studentdatumId);
+        const studentname = await getStudentName(work.studentdatum_id);
         return { ...work.dataValues, student_name: studentname};
     }));
     return result;

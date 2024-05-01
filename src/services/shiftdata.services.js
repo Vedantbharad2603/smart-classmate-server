@@ -30,8 +30,8 @@ async function update(idin, params) {
     const updatingShift = await getshiftatribute(idin);
     const existingShift = await db.Shift.findAll({
         where: {
-            startTime : params.startTime,
-            endTime : params.endTime,
+            start_time : params.start_time,
+            end_time : params.end_time,
         },
     });
     
@@ -46,8 +46,8 @@ async function update(idin, params) {
 async function create(params) {
     const existingShift = await db.Shift.findAll({
         where: {
-            startTime : params.startTime,
-            endTime : params.endTime,
+            start_time : params.start_time,
+            end_time : params.end_time,
         },
     });
     if (existingShift.length > 0)  {

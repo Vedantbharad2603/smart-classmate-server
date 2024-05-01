@@ -20,7 +20,7 @@ function model(sequelize) {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        isActive: {
+        is_active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },

@@ -19,25 +19,25 @@ async function getAll() {
 async function getStudentWithActiveCourse() {
     const students = await db.Student.findAll();
 
-    const loginIds = students.map(student => student.logindatumId);
-    const isActive = await getisActiveStatus(loginIds);
+    const login_ids = students.map(student => student.logindatum_id);
+    const is_active = await getisActiveStatus(login_ids);
 
     const result = await Promise.all(students.map(async (student, index) => {
         const currentCourse = await getCurrentCourse(student.id);
-        return { ...student.dataValues, isActive: isActive[index].isActive, username: isActive[index].username, course_name: currentCourse.course_name };
+        return { ...student.dataValues, is_active: is_active[index].is_active, username: is_active[index].username, course_name: currentCourse.course_name };
     }));
 
     return result;
 }
 
-async function getisActiveStatus(loginIds) {
+async function getisActiveStatus(login_ids) {
     const logins = await db.Login.findAll({
-        where: { id: loginIds },
-        attributes: ['isActive', 'username']
+        where: { id: login_ids },
+        attributes: ['is_active', 'username']
     });
 
     return logins.map(login => ({
-        isActive: login.isActive,
+        is_active: login.is_active,
         username: login.username
     }));
 }
@@ -45,19 +45,19 @@ async function getisActiveStatus(loginIds) {
 
 async function getCurrentCourse(studentId) {
     const courseEnrollment = await db.CourseEnrollment.findOne({ 
-        where: { studentdatumId: studentId, is_current_course: 1 }
+        where: { studentdatum_id: studentId, is_current_course: 1 }
     });
     if (!courseEnrollment) throw new Error("Course not found");
 
-    const courseId = courseEnrollment.courseId;
-    const courseName = await getCourseName(courseId);
+    const course_id = courseEnrollment.course_id;
+    const courseName = await getCourseName(course_id);
 
     return { course_name: courseName };
 }
 
-async function getCourseName(courseId) {
+async function getCourseName(course_id) {
     const course = await db.Courses.findOne({ 
-        where: { id: courseId },
+        where: { id: course_id },
         attributes: ['course_name']
     });
     if (!course) throw new Error("Course not found");
@@ -79,7 +79,7 @@ async function getById(id) {
     if (!student) throw new Error("Student not found");
 
     if (!student) return "Student not found for this login";
-    login = await getloginatribute(student.logindatumId);
+    login = await getloginatribute(student.logindatum_id);
     if (!login) return "Login data not found for this student";
     return { student,login};
 }

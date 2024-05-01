@@ -25,7 +25,7 @@ exports.findAll = (req, res, next) => {
 
 exports.getlevels = (req, res, next) => {
     courselevels_service
-    .getlevels(req.body.courseId)
+    .getlevels(req.body.course_id)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",

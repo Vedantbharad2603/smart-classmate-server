@@ -12,7 +12,7 @@ function model(sequelize) {
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
-        timeDuration: {
+        time_duration: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
