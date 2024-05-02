@@ -81,6 +81,17 @@ exports.getStudinfo = (req, res, next) => {
     )
     .catch(next);
 };
+exports.getStudinfo2 = (req, res, next) => {
+    login_service
+    .givestudentDetail2(req.body.id)
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
 exports.check = (req, res, next) => {
     login_service
     .checklogin(req.body)

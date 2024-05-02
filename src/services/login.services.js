@@ -13,6 +13,7 @@ module.exports = {
     del,
     studentcount,
     givestudentDetail,
+    givestudentDetail2,
     changeType,
     changeStatus,
     getteacheratribute,
@@ -190,6 +191,40 @@ async function givestudentDetail(idin){
     if (!login) return "Student not found in login";
 
     courseinfo = await getCurrentCourse(userdata.id);
+    if (!courseinfo) return "Course not found for this Student";
+
+    shift = await db.Shift.findOne({
+        where:{
+            id:userdata.shiftdatum_id
+        }
+    });
+
+    return { login, userdata, courseinfo, shift };
+}
+
+
+async function givestudentDetail2(idin){
+    let userdata;
+    let login;
+    let courseinfo;
+    let shift;
+
+    userdata = await db.Student.findOne({
+        where:{id:idin}
+    });
+    if (!userdata) return "Student not found";
+
+    login = await db.Login.findOne({
+        where: {
+            id:userdata.logindatum_id
+        },
+    });
+    if (!login) return "Student not found in login";
+
+    courseinfo = await db.CourseEnrollment.findAll({ 
+        where: { studentdatum_id: userdata.id}
+    });
+    
     if (!courseinfo) return "Course not found for this Student";
 
     shift = await db.Shift.findOne({
