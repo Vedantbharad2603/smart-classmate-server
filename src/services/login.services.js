@@ -207,7 +207,7 @@ async function givestudentDetail2(idin){
     let userdata;
     let login;
     let courseinfo;
-    let shift;
+    let shiftdata;
 
     userdata = await db.Student.findOne({
         where:{id:idin}
@@ -227,13 +227,13 @@ async function givestudentDetail2(idin){
     
     if (!courseinfo) return "Course not found for this Student";
 
-    shift = await db.Shift.findOne({
+    shiftdata = await db.Shift.findOne({
         where:{
             id:userdata.shiftdatum_id
         }
     });
 
-    return { login, userdata, courseinfo, shift };
+    return { login, userdata, courseinfo, shiftdata };
 }
 // async function givestudentDetail(idin){
 //     let userdata;
