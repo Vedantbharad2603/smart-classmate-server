@@ -10,7 +10,12 @@ module.exports = {
     del
 };
 async function getAll() {
-    return await db.Attendance.findAll();
+    const studentAttendance =  await db.Attendance.findAll();
+    const result = await Promise.all(studentAttendance.map(async (student, index) => {
+        const studinfo = await getStudentname(student.studentdatum_id);
+        return { ...student.dataValues, full_name: studinfo.full_name,shiftdatum_id: studinfo.shiftdatum_id };
+    }));
+    return result;
 }
 
 // async function update(params) {
@@ -19,6 +24,7 @@ async function getAll() {
 //     await attendance.save();
 //     return attendance;
 // }
+
 async function updateMultiple(records) {
     let updatedRecords = [];
 
