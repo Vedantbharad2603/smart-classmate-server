@@ -13,6 +13,6 @@ router.post("/getStudProfile", logindataController.getStudinfo);
 router.post("/getStudProfileWithAllCourse", logindataController.getStudinfo2);
 router.put("/change", logindataController.changeUserStatus);
 router.put("/changeType", logindataController.changeType);
-router.put("/update/:id", logindataController.updatelogin);
+router.put("/update", logindataController.updatelogin);
 // router.delete("/:id", logindataController.del);
 module.exports = router;

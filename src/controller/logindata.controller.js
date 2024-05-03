@@ -105,7 +105,7 @@ exports.check = (req, res, next) => {
 };
 exports.updatelogin = (req, res, next) => {
     login_service
-    .update(req.params.id, req.body)
+    .update(req.body.id, req.body)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
