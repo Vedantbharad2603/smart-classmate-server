@@ -63,25 +63,25 @@ async function getStudentsInfo(login_ids) {
     return students.map(student => student.id);
 }
 
-async function create() {
-    const activeStudentIds= await getActiveStudentsid();
+async function create(date) {
+    const activeStudentIds = await getActiveStudentsid();
     const studentInfo = await getStudentsInfo(activeStudentIds);
     const attendancePromises = studentInfo.map(async student_id => {
         const existingAttendance = await db.Attendance.findOne({
             where: {
-                date: new Date().toISOString().split('T')[0],
+                date: date,
                 studentdatum_id: student_id
             }
         });
 
         if (!existingAttendance) {
             return db.Attendance.create({
-                date: new Date().toISOString().split('T')[0], // Date only, no time
+                date: date,
                 status: 4,
                 studentdatum_id: student_id
             });
         } else {
-            return null; // Return null for existing rows
+            return existingAttendance; // Return null for existing rows
         }
     });
     const attendance = await Promise.all(attendancePromises);

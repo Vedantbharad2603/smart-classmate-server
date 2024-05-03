@@ -1,7 +1,8 @@
 const attendance_service = require("../services/attendance.services");
 exports.create = (req, res, next) => {
+    const date = req.body.date; // Assuming date is sent in the request body
     attendance_service
-    .create()
+    .create(date)
     .then((response) =>
         res.status(200).send({
             message: typeof response === "string" ? "Error" : "Success",
