@@ -7,6 +7,7 @@ module.exports = {
     getAll,
     getByEmail,
     getTeacher,
+    getStudent,
     checklogin,
     create,
     update,
@@ -43,6 +44,24 @@ async function getTeacher() {
         if (login.type !== 'student') {
             const userdata = await getteacheratribute(login.id);
             if (!userdata) return "Teacher not found for this login";
+            return { login, userdata };
+        }
+    });
+
+    const userData = await Promise.all(userDataPromises);
+    return userData.filter(Boolean);
+}
+async function getStudent() {
+    const login = await db.Login.findAll({
+        where: {
+            type: 'student'
+        },
+    });
+    const userDataPromises = login.map(async (login) => {
+        if (login.type == 'student') {
+            const userdata = await getstudentatribute(login.id);
+            
+            if (!userdata) return "Student not found for this login";
             return { login, userdata };
         }
     });

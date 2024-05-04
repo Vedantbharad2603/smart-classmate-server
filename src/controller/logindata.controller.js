@@ -46,6 +46,17 @@ exports.findteacher = (req, res, next) => {
     )
     .catch(next);
 };
+exports.findstudent = (req, res, next) => {
+    login_service
+    .getStudent()
+    .then((response) =>
+        res.status(200).send({
+            message: typeof response === "string" ? "Error" : "Success",
+            data: response,
+        })
+    )
+    .catch(next);
+};
 
 exports.findOne = (req, res, next) => {
     login_service
