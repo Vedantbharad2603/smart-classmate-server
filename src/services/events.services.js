@@ -6,6 +6,7 @@ module.exports = {
     getById,
     create,
     upcoming,
+    upcomingone,
     update,
     del
 };
@@ -29,6 +30,21 @@ async function upcoming() {
             }
         },
         order: [['event_date', 'ASC']],
+    });
+}
+
+async function upcomingone() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return await db.Events.findOne({
+        where: {
+            event_date: {
+                [Op.gt]: today
+            }
+        },
+        order: [['event_date', 'ASC']],
+        limit: 1
     });
 }
 
