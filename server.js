@@ -16,6 +16,7 @@ const coursesRoutes = require('./src/routes/courses.router');
 const courselevelsRoutes = require('./src/routes/courselevels.router');
 const courseconceptsRoutes = require('./src/routes/courseconcepts.router');
 const courseenrollmentRoutes = require('./src/routes/courseenrollment.router');
+const timetableRoutes = require('./src/routes/timetable.router');
 const emailRoutes = require('./src/routes/email.router');
 
 // Create an Express application
@@ -43,6 +44,7 @@ app.use("/api/courses", coursesRoutes)
 app.use("/api/courselevels", courselevelsRoutes)
 app.use("/api/courseenrollment", courseenrollmentRoutes)
 app.use("/api/courseconcepts", courseconceptsRoutes)
+app.use("/api/timetable", timetableRoutes)
 app.use('/api/mail', emailRoutes);
 
 

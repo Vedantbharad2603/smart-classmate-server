@@ -40,6 +40,8 @@ async function initialize() {
   db.CourseLevels = require("../model/course_levels.model")(sequelize);
   db.CourseConcepts = require("../model/course_concepts.model")(sequelize);
   db.CourseEnrollment = require("../model/course_enrollment.model")(sequelize);
+  db.TimeTable = require("../model/timetable.model.js")(sequelize);
+
 
   // For Teacher references
   db.Login.hasMany(db.Teacher, { foreignKey: { allowNull: false,name:'logindatum_id' } });

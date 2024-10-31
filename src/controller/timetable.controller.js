@@ -1,4 +1,4 @@
-const timetable_service = require("../services/timetable.services");
+const timetable_service = require("../services/timetable.services.js");
 
 exports.create = (req, res, next) => {
     timetable_service
@@ -12,12 +12,13 @@ exports.create = (req, res, next) => {
         .catch(next);
 };
 
+
 exports.findAll = (req, res, next) => {
     timetable_service
-        .getAll()
+    .getAll()
         .then((response) =>
             res.status(200).send({
-                message: typeof response === "string" ? "Error" : "Success",
+                message: "Success",
                 data: response,
             })
         )
@@ -26,7 +27,7 @@ exports.findAll = (req, res, next) => {
 
 exports.findOne = (req, res, next) => {
     timetable_service
-        .getByDay(req.body.day)
+        .getByDay(req.body.day) 
         .then((response) =>
             res.status(200).send({
                 message: typeof response === "string" ? "Error" : "Success",

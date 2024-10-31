@@ -17,6 +17,7 @@
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
     "sequelize": "^6.37.1",
+    "server": "file:",
     "validator": "^13.11.0"
   }
 }
